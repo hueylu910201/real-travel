@@ -6,6 +6,7 @@ import SearchBar from './SearchBar';
 import './App.css'
 import L from 'leaflet';
 import data from "./Data.json"
+import locationPin from '../public/img/location-pin.png';
 
 
 function App() {
@@ -24,6 +25,13 @@ function App() {
       map.flyTo(marker.position, 16); // You can adjust the zoom level (12) as needed
     }
   };
+  const onSearchResult = (searchItem) => {
+    const marker = data.find(item => item.name.toLowerCase() === searchItem.toLowerCase());
+    if (marker && mapRef.current) {
+      const map = mapRef.current;
+      map.flyTo(marker.position, 16);
+    }
+  }
 
   //縣市wms圖層
   const wmsURL = "http://wms.nlsc.gov.tw/wms";
@@ -39,18 +47,15 @@ function App() {
     opacity: 1,
   };
 
+  const markerIcon = new L.Icon({
+    iconUrl: locationPin,
+    iconSize:[45,45],
+  });
 
-  const onSearchResult = (searchItem) => {
-    const marker = data.find(item => item.name.toLowerCase() === searchItem.toLowerCase());
-    if (marker && mapRef.current) {
-      const map = mapRef.current;
-      map.flyTo(marker.position, 16);
-    }
-  }
 
   return (
     <div>
-      <SearchBar placeholder="尋找店家" data={data} onSearchResult={onSearchResult}/>
+      <SearchBar placeholder="尋找店家" data={data} onSearchResult={onSearchResult} />
       <div style={{ marginTop: '3rem' }}>
         <MapContainer center={[25.02308934789089, 121.54513940000001]} zoom={16} scrollWheelZoom={true} ref={mapRef} style={{ height: '60vh', width: '50vw' }}>
           <TileLayer
@@ -65,7 +70,7 @@ function App() {
           </Marker>
 
           {data.map((marker, index) => (
-            <Marker key={index} position={marker.position} >
+            <Marker key={index} position={marker.position} icon={markerIcon}>
               <Popup>
                 <div>
                   <p>{marker.name}</p>
