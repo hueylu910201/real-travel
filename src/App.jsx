@@ -63,7 +63,7 @@ function App() {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <WMSTileLayer url={wmsURL} {...wmsLayerParams} />
-          <Marker position={[25.02308934789089, 121.54513940000001]}>
+          <Marker position={[25.02308934789089, 121.54513940000001]} icon={markerIcon}>
             <Popup>
               國立臺灣大學 <br /> 教育學院
             </Popup>
