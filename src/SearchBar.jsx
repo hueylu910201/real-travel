@@ -1,10 +1,9 @@
 import React from 'react';
 import styles from "./styles.module.css"
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 
 export default function SearchBar({ placeholder, data ,onSearchResult}) {
-  const mapRef = useRef();
 
   //搜尋filter
   const [value, setValue] = useState('');
@@ -25,11 +24,6 @@ export default function SearchBar({ placeholder, data ,onSearchResult}) {
   const onSearch = (searchItem) => {
     setValue(searchItem);
     console.log("內容:", searchItem);
-    const marker = data.find(item => item.name.toLowerCase() === searchItem.toLowerCase());
-    // if (marker && mapRef.current) {
-    //   const map = mapRef.current;
-    //   map.flyTo(marker.position, 16);
-    // }
     onSearchResult(searchItem);
     setFilterData([]);
   }
