@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, Polygon, WMSTileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import './App.css'
@@ -10,13 +10,22 @@ import locationPin from '../public/img/location-pin.png';
 
 export default function Map({ mapRef }) {
 
-    useEffect(() => {
-        if (mapRef.current) {
-            const map = mapRef.current;
-            // 监听mapRef的变化，执行map.flyTo操作
-            map.flyTo([25.02308934789089, 121.54513940000001], 16); // 设置默认的中心位置和缩放级别
+    //多選filter
+    const [selected, setSelected] = useState([]);
+    const [filteredItem, setFilteredItem] = useState(data);
+    let [sort, setSort] = useState([]);
+    console.log(sort);
+    const handleSortClick = (index) => {
+        console.log(selected);
+        if (selected.includes(index)) {
+          setSelected(selected.filter(item => item !== index));
+        } else {
+          setSelected([...selected, index]);
         }
-    }, [mapRef]);
+      };
+
+
+
 
     //多邊形範圍
     const purpleOptions = { color: 'purple' };
@@ -50,6 +59,25 @@ export default function Map({ mapRef }) {
         }
     };
 
+
+    //更新多選狀態
+    useEffect(() => {
+        if (sort.length > 0 && selected.length > 0) {
+          const selectedSorts = selected.map(index => sort[index]);
+          const sortedAndFilteredData = data.filter(item => selectedSorts.includes(item.sort));
+          setFilteredItem(sortedAndFilteredData);
+        }
+      }, [selected, sort]);
+
+    useEffect(() => {
+        const sortValues = Array.from(new Set(data.map(item => item.sort)));
+        setSort(sortValues);
+        if (mapRef.current) {
+            const map = mapRef.current;
+            // 监听mapRef的变化，执行map.flyTo操作
+            map.flyTo([25.02308934789089, 121.54513940000001], 16); // 设置默认的中心位置和缩放级别
+        }
+    }, [mapRef]);
     return (
         <div style={{ marginTop: '3rem' }}>
             <MapContainer center={[25.02308934789089, 121.54513940000001]} zoom={16} scrollWheelZoom={true} ref={mapRef} style={{ height: '60vh', width: '50vw' }}>
@@ -64,7 +92,7 @@ export default function Map({ mapRef }) {
                     </Popup>
                 </Marker>
 
-                {data.map((marker, index) => (
+                {filteredItem.map((marker, index) => (
                     <Marker key={index} position={marker.position} icon={markerIcon}>
                         <Popup>
                             <div>
@@ -75,10 +103,19 @@ export default function Map({ mapRef }) {
                     </Marker>
 
                 ))}
-                <Polygon pathOptions={purpleOptions} positions={polygon} />
+                {/* <Polygon pathOptions={purpleOptions} positions={polygon} /> */}
             </MapContainer>
+
+            <div style={{ width: '50vw', height: '6vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+                {sort.map((sort, index) => (
+                    <button key={index} className={selected.includes(index) ? 'active sort-button' : 'sort-button'} onClick={() => handleSortClick(index)}>
+                        {sort}
+                    </button>
+                ))}
+            </div>
+
             <div style={{ width: '50vw', height: '25vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
-                {data.map((marker, index) => (
+                {filteredItem.map((marker, index) => (
                     <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <img src={marker.img} alt={marker.name} style={{ width: '10rem' }} onClick={() => markerClick(marker)} />
                         <a>{marker.name}</a>
