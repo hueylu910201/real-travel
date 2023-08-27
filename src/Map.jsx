@@ -6,30 +6,38 @@ import './App.css'
 import L from 'leaflet';
 import data from "./Data.json"
 import locationPin from '../public/img/location-pin.png';
+import restaurant from '../public/img/fork.png';
+import hotel from '../public/img/hotel.png';
+import landscape from '../public/img/trees.png';
+
 
 
 export default function Map({ mapRef }) {
 
     //多選filter
-    const [selected, setSelected] = useState([]);
     const [filteredItem, setFilteredItem] = useState(data);
     let [sort, setSort] = useState([]);
+    const [selected, setSelected] = useState([]);
     console.log(sort);
     const handleSortClick = (index) => {
+        if (selected.length === 1 && selected[0] === index) {
+            return; // 不执行状态更新
+        }
         console.log(selected);
         if (selected.includes(index)) {
-          setSelected(selected.filter(item => item !== index));
+            setSelected(selected.filter(item => item !== index));
+
         } else {
-          setSelected([...selected, index]);
+            setSelected([...selected, index]);
         }
-      };
+    };
 
 
 
 
     //多邊形範圍
     const purpleOptions = { color: 'purple' };
-    const polygon = data.map(marker => marker.position);
+    const polygon = filteredItem.map(marker => marker.position);
 
     //縣市wms圖層
     const wmsURL = "http://wms.nlsc.gov.tw/wms";
@@ -48,8 +56,23 @@ export default function Map({ mapRef }) {
 
     const markerIcon = new L.Icon({
         iconUrl: locationPin,
-        iconSize: [45, 45],
+        iconSize: [40, 40],
     });
+
+    // Create icons for different categories
+    const createMarkerIcon = (category) => {
+        const icons = {
+            '餐廳': restaurant,
+            '住宿': hotel,
+            '景點': landscape,
+            // Add icons for other categories
+        };
+        return L.icon({
+            iconUrl: icons[category] || locationPin,
+            iconSize: [40, 40],
+        });
+    };
+
 
 
     const markerClick = (marker) => {
@@ -63,15 +86,17 @@ export default function Map({ mapRef }) {
     //更新多選狀態
     useEffect(() => {
         if (sort.length > 0 && selected.length > 0) {
-          const selectedSorts = selected.map(index => sort[index]);
-          const sortedAndFilteredData = data.filter(item => selectedSorts.includes(item.sort));
-          setFilteredItem(sortedAndFilteredData);
+            const selectedSorts = selected.map(index => sort[index]);
+            const sortedAndFilteredData = data.filter(item => selectedSorts.includes(item.sort));
+            setFilteredItem(sortedAndFilteredData);
         }
-      }, [selected, sort]);
+    }, [selected, sort]);
 
     useEffect(() => {
         const sortValues = Array.from(new Set(data.map(item => item.sort)));
         setSort(sortValues);
+        const defaultActiveIndex = sortValues.indexOf('住宿');
+        setSelected([defaultActiveIndex]);
         if (mapRef.current) {
             const map = mapRef.current;
             // 监听mapRef的变化，执行map.flyTo操作
@@ -88,12 +113,12 @@ export default function Map({ mapRef }) {
                 <WMSTileLayer url={wmsURL} {...wmsLayerParams} />
                 <Marker position={[25.02308934789089, 121.54513940000001]} icon={markerIcon}>
                     <Popup>
-                        國立臺灣大學 <br /> 教育學院
+                        國立臺北教育大學 <br />
                     </Popup>
                 </Marker>
 
                 {filteredItem.map((marker, index) => (
-                    <Marker key={index} position={marker.position} icon={markerIcon}>
+                    <Marker key={index} position={marker.position} icon={createMarkerIcon(marker.sort)}>
                         <Popup>
                             <div>
                                 <p>{marker.name}</p>
