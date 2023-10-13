@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, Polygon, WMSTileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import './App.css'
@@ -12,10 +13,7 @@ import hotel from '../public/img/hotel.png';
 import landscape from '../public/img/trees.png';
 
 
-
 export default function Map({ mapRef, data, center, city }) {
-
-
 
     //多選filter
     const [filteredItem, setFilteredItem] = useState(data);
@@ -111,10 +109,13 @@ export default function Map({ mapRef, data, center, city }) {
 
                 {filteredItem.map((marker, index) => (
                     <Marker key={index} position={marker.position} icon={createMarkerIcon(marker.sort)}>
-                        <Popup>
+                        <Popup >
                             <div>
                                 <p>{marker.name}</p>
                                 <img src={marker.img} alt={marker.name} style={{ width: '10rem', cursor: 'pointer' }} />
+                                <Link to={`/MapView/name/${marker.name}`}>
+                                    <div>查看詳情</div>
+                                </Link>
                             </div>
                         </Popup>
                     </Marker>
@@ -131,7 +132,8 @@ export default function Map({ mapRef, data, center, city }) {
                 ))}
             </div>
 
-            <MapItemList data={filteredItem} mapRef={mapRef}/>
+            {/* <MapItemList data={filteredItem} mapRef={mapRef}/> */}
         </div>
+
     );
 }

@@ -1,6 +1,7 @@
 [
     {
         "city": "Taipei",
+        "district":"Daan",
         "name": "台北-烏弄",
         "sort": "住宿",
         "position": [
@@ -11,6 +12,7 @@
     },
     {
         "city": "Taipei",
+        "district":"Daan",
         "name": "台北-可不可熟成紅茶",
         "sort": "餐廳",
         "position": [
@@ -21,6 +23,7 @@
     },
     {
         "city": "Taipei",
+        "district":"Xinyi",
         "name": "台北-不知道",
         "sort": "景點",
         "position": [
@@ -31,6 +34,7 @@
     },
     {
         "city": "Taipei",
+        "district":"Xinyi",
         "name": "台北-米堤銀行",
         "sort": "米堤銀行",
         "position": [
@@ -44,6 +48,7 @@
 
     {
         "city": "NewTaipei",
+        "district":"Sanchung",
         "name": "新北-烏弄",
         "sort": "住宿",
         "position": [
@@ -54,6 +59,7 @@
     },
     {
         "city": "NewTaipei",
+        "district":"Sanchung",
         "name": "新北-可不可熟成紅茶",
         "sort": "餐廳",
         "position": [
@@ -64,6 +70,7 @@
     },
     {
         "city": "NewTaipei",
+        "district":"Luzhou",
         "name": "新北-不知道",
         "sort": "景點",
         "position": [
@@ -74,6 +81,7 @@
     },
     {
         "city": "NewTaipei",
+        "district":"Luzhou",
         "name": "新北-米堤銀行",
         "sort": "米堤銀行",
         "position": [
