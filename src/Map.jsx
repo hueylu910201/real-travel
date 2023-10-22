@@ -7,6 +7,7 @@ import './App.css'
 import L from 'leaflet';
 // import data from "./Data.json"
 import MapItemList from './MapItemList';
+import AddToFavorite from './AddToFavorite';
 import locationPin from '../public/img/location-pin.png';
 import restaurant from '../public/img/fork.png';
 import hotel from '../public/img/hotel.png';
@@ -113,6 +114,7 @@ export default function Map({ mapRef, data, center, city }) {
                             <div>
                                 <p>{marker.name}</p>
                                 <img src={marker.img} alt={marker.name} style={{ width: '10rem', cursor: 'pointer' }} />
+                                <AddToFavorite data={marker}/>
                                 <Link to={`/MapView/name/${marker.name}`}>
                                     <div>查看詳情</div>
                                 </Link>
