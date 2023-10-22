@@ -16,10 +16,12 @@ export default function FavoriteSummary() {
 
     const toggleOpen = () => { setIsOpen(!isOpen); console.log(favItems); };
     return (
-        <div style={{ margin: '1rem' }} onClick={toggleOpen}>
-            <Badge count={count}>
-                <ShoppingCartIcon />
-            </Badge>
+        <div style={{ margin: '1rem' }}>
+            <nav onClick={toggleOpen}>
+                <Badge count={count}>
+                    <ShoppingCartIcon />
+                </Badge>
+            </nav>
             <FavoriteModel
                 isOpen={isOpen}
                 toggleModal={toggleOpen}
