@@ -109,7 +109,7 @@ export default function Map({ mapRef, data, center, city }) {
                 </Marker>
 
                 {filteredItem.map((marker, index) => (
-                    <Marker key={index} position={marker.position} icon={createMarkerIcon(marker.sort)}>
+                    <Marker key={index} position={marker.position} icon={createMarkerIcon(marker.sort)} >
                         <Popup >
                             <div>
                                 <p>{marker.name}</p>
@@ -123,7 +123,7 @@ export default function Map({ mapRef, data, center, city }) {
                     </Marker>
 
                 ))}
-                {/* <Polygon pathOptions={purpleOptions} positions={polygon} /> */}
+                {/* <Polygon pathOptions={purpleOptions} positions={position} /> */}
             </MapContainer>
 
             <div style={{ width: '50vw', height: '6vh', display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>

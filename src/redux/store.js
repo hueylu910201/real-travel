@@ -4,6 +4,7 @@
 import thunk from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit';
 import favReducer from './favoriteSlice';
+import scheduleReducer from './scheduleSlice';
 
 // Data Persist Config
 // const persistConfig = {
@@ -18,6 +19,7 @@ import favReducer from './favoriteSlice';
 export const store = configureStore({
    reducer: {
     favorite: favReducer,
+    schedule: scheduleReducer,
    },
    devTools: process.env.NODE_ENV !== 'favorite',
 //    middleware: [thunk]

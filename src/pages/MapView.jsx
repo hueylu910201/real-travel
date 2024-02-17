@@ -4,6 +4,7 @@ import Map from "../Map";
 import SearchBar from "../SearchBar";
 import DistrictDropdown from "../DistrictDropdown";
 import FavoriteSummary from "../FavoriteSummary";
+import ScheduleButton from "../ScheduleButton";
 import data from "../Data.json";
 
 
@@ -46,6 +47,7 @@ export default function MapView() {
             <Map mapRef={mapRef} data={filteredData} center={center} city={city} />
             <DistrictDropdown city={city} onDistrictChange={handleDistrictChange}/>
             <FavoriteSummary/>
+            <ScheduleButton/>
             <Link to="/"><button>返回</button></Link>
         </div>
     );
