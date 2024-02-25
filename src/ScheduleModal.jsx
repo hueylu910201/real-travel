@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal, Button, Input, Space, DatePicker, Form } from "antd";
 import { useDispatch ,useSelector} from "react-redux";
 import { addScheduleItems } from "./redux/scheduleSlice";
+import { addFavItems } from "./redux/favoriteSlice";
 import { Schedule } from "@mui/icons-material";
 import { v4 as uuidv4 } from 'uuid';
 export default function ScheduleModal({ isOpen, toggleModal }) {
@@ -19,22 +20,26 @@ export default function ScheduleModal({ isOpen, toggleModal }) {
     const existingSchedules = useSelector(state => state.schedule.schedules);
 
     const dispatch = useDispatch();
-    // const addToSchedule = () => {
-    //     dispatch(addScheduleItems({
-    //         name: scheduleName,
-    //         time: time,
-    //     }));
-    //     console.log('Action dispatched');
-    // }
+    const addToSchedule = () => {
+        dispatch(addScheduleItems({
+            scheduleName: scheduleName,
+            time: time,
+        }));
+        console.log('Action dispatched');
+    }
 
     const onFinish = (values) => {
         console.log('success:', values);
             // If not a duplicate, dispatch the action
-            dispatch(addScheduleItems({
-                id: uuidv4(),
+            dispatch(addFavItems({
+                scheduleId: uuidv4(),
                 scheduleName: scheduleName,
                 time: time,
-                // landmark:landmarks
+                landmarks
+            }));
+            dispatch(addScheduleItems({
+                scheduleName: scheduleName,
+                time: time,
             }));
         console.log('Action dispatched');
         handleCancel();

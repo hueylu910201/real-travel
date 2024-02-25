@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, DatePicker, Space, TimePicker, Button } from "antd";
+import { Modal, DatePicker, Space, TimePicker, Button, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFavItems } from "./redux/favoriteSlice";
 import { removeFavItems } from "./redux/favoriteSlice";
@@ -10,7 +10,7 @@ export default function FavoriteModel({ isOpen, toggleModal, selectedCategory })
     const dispatch = useDispatch();
     const favItems = useSelector(selectFavItems);
     const handleCancel = () => { toggleModal(!isOpen); console.log(isOpen) };
-    const [selectedTrip, setSelectedTrip] = useState(''); // 新增儲存選擇行程的狀態
+    const [selectedTrip, setSelectedTrip] = useState(''); // 儲存選擇行程的狀態
 
     const [duringTime, setDuringTime] = useState(null);
     const [endtTime, setEndTime] = useState(null);
@@ -40,7 +40,7 @@ export default function FavoriteModel({ isOpen, toggleModal, selectedCategory })
     }
 
     const selectedSchedule = useSelector(state =>
-        state.favorite.schedules.find(schedule => schedule.name === selectedTrip)
+        state.favorite.schedules.find(schedule => schedule.scheduleName === selectedTrip)
     );
     const landmarks = selectedSchedule ? selectedSchedule.landmarks : [];
     return (
@@ -57,28 +57,22 @@ export default function FavoriteModel({ isOpen, toggleModal, selectedCategory })
                 ))}
             </select>
             {favItems.length === 0 ? (<div>無收藏景點</div>) : (
-                favItems.filter(item => item.scheduleName === selectedTrip).map((item, index) => (
+                landmarks.map((item, index) => (
                     <li key={index}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <img src={item.landmark.img} alt={item.landmark.name} style={{ height: '15rem' }} />
-                            <div>
+                        <div style={{ display: 'flex', alignItems: 'center' ,margin:'1rem'}}>
+                            <img src={item.img} alt={item.name} style={{ height: '7rem' }} />
+                            <div style={{marginLeft:'0.5rem'}}>
                                 <div style={{ display: 'flex' }}>
-                                    <a style={{ fontSize: '1rem' }}>{item.landmark.name}</a>
-                                    <div style={{ fontSize: '1rem' }} onClick={() => dispatch(removeFavItems(item.landmark.name))}>
+                                    <a style={{ fontSize: '1rem' }}>{item.name}</a>
+                                    <div style={{ fontSize: '1rem' }} onClick={() => dispatch(removeFavItems({ scheduleName: selectedTrip, landmarkName: item.name }))}>
                                         x
                                     </div>
                                 </div>
 
                                 <Space direction="vertical" size={12}>
                                     <DatePicker onChange={startTimeChange} picker="time" />
+                                    <Input/>
                                 </Space>
-                                <p>起始時間:{duringTime}</p>
-                                <Button onClick={changeDuringTime}>儲存</Button>
-
-                                {/* <Space direction="vertical" size={12}>
-                                    <DatePicker onChange={endTimeChange} picker="time" />
-                                </Space>
-                                <p>結束時間:{endtTime}</p> */}
                             </div>
 
                         </div>
@@ -86,6 +80,7 @@ export default function FavoriteModel({ isOpen, toggleModal, selectedCategory })
                     </li>
                 ))
             )}
+            <Button onClick={changeDuringTime} style={{display:'flex',justifyContent:'flex-end'}}>儲存</Button>
         </Modal>
     );
 }

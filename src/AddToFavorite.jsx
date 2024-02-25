@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFavItems } from "./redux/favoriteSlice";
 import { addScheduleItems } from "./redux/scheduleSlice";
 import { selectScheduleItems } from "./redux/scheduleSlice";
+import { selectFavItems } from "./redux/favoriteSlice";
 export default function AddToFavorite({ data }) {
     // console.log(data);
     const dispatch = useDispatch();
-    const scheduleItem = useSelector(selectScheduleItems) || [];
+    const scheduleItem = useSelector(selectFavItems) || [];
     const [selectedSchedule, setSelectedSchedule] = useState('');
 
     const handleScheduleChange = (event) => {
@@ -18,41 +19,26 @@ export default function AddToFavorite({ data }) {
 
     const addToFav = () => {
         dispatch(addFavItems({
-            // id:selectedSchedule,
-            // scheduleName:selectedSchedule,
             scheduleName: selectedSchedule,
             landmark: {
                 city: data.city,
                 name: data.name,
                 img: data.img,
                 qty: 1,
+                note:'',
+                duringTime:'',
             },
 
-
-            // city: data.city,
-            // name: data.name,
-            // img: data.img,
-            // category: selectedSchedule,
-            // qty: 1,
         }));
         console.log('Action dispatched');
-        const landmarkData = {
-            landmarkName: data.name,
-            landmarkImg: data.img,
-            duringTime: '',
-        }
-        // dispatch(addScheduleItems({
-        //     landmark: [landmarkData],
-        // }))
         const isLandmarkInSchedule = scheduleItem.some(item => item.landmark && item.landmark.some(landmark => landmark.name === data.name));
 
-        // 如果该地标不存在于日程中，则添加到日程中
-        if (!isLandmarkInSchedule) {
-            dispatch(addScheduleItems({
-                scheduleName: selectedSchedule,
-                landmark: [landmarkData],
-            }))
-        }
+        // // 如果该地标不存在于日程中，则添加到日程中
+        // if (!isLandmarkInSchedule) {
+        //     dispatch(addScheduleItems({
+        //         scheduleName: selectedSchedule,
+        //     }))
+        // }
     }
     return (
         <div>
