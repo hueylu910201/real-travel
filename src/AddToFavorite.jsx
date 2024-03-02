@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from 'uuid';
 import { addFavItems } from "./redux/favoriteSlice";
 import { addScheduleItems } from "./redux/scheduleSlice";
 import { selectScheduleItems } from "./redux/scheduleSlice";
@@ -23,10 +24,12 @@ export default function AddToFavorite({ data }) {
             landmark: {
                 city: data.city,
                 name: data.name,
+                id: uuidv4(), // 這會為地標生成一個唯一的ID
                 img: data.img,
+                position:data.position,
                 qty: 1,
                 note:'',
-                duringTime:'',
+                arrivalTime:'',
             },
 
         }));

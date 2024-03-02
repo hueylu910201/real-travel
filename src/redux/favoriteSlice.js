@@ -35,10 +35,8 @@ const favSlice = createSlice({
           });
         }
       }
-
-
-
     },
+
     removeFavItems: (state, action) => {
       const { scheduleName, landmarkName } = action.payload;
       const scheduleIndex = state.schedules.findIndex(schedule => schedule.scheduleName === scheduleName);
@@ -48,6 +46,23 @@ const favSlice = createSlice({
         state.schedules[scheduleIndex].landmarks = filteredLandmarks;
       }
     },
+    updateLandmarks: (state, action) => {
+      const { landmarkId, arriveTime, note } = action.payload;
+      state.schedules.forEach(schedule => {
+        const landmark = schedule.landmarks.find(landmark => landmark.id === landmarkId);
+        if (landmark) {
+          landmark.arrivalTime = arriveTime;
+          landmark.note = note;
+        }
+      });
+    },
+    updateLandmarkOrder: (state, action) => {
+      const { scheduleName, newLandmarks } = action.payload;
+      const scheduleIndex = state.schedules.findIndex(schedule => schedule.scheduleName === scheduleName);
+      if (scheduleIndex >= 0) {
+        state.schedules[scheduleIndex].landmarks = newLandmarks;
+      }
+    }
   },
 });
 
@@ -55,7 +70,7 @@ const favSlice = createSlice({
 export const selectFavItems = (state) => state.favorite.schedules;
 
 // export actions to global
-export const { addFavItems, removeFavItems } = favSlice.actions;
+export const { addFavItems, removeFavItems, updateLandmarks, updateLandmarkOrder } = favSlice.actions;
 
 // export reducer to global
 export default favSlice.reducer;
