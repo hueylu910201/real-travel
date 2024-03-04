@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Modal, DatePicker, Space, TimePicker, Button, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFavItems } from "./redux/favoriteSlice";
@@ -149,7 +150,10 @@ export default function FavoriteModel({ isOpen, toggleModal, selectedCategory })
 
                                 ))
                             )}
-                            {provided.placeholder}  {/* 確保這一行存在 */}
+                            <Link to={`/MapView/schedule/${selectedTrip}`}>
+                                <div>查看行程座標</div>
+                            </Link>
+                            {provided.placeholder}
                         </div>
                     )}
 

@@ -7,6 +7,7 @@ import './App.css'
 import MapView from './pages/MapView';
 import Home from './pages/Home';
 import Location from './pages/Location';
+import ScheduleMap from './pages/ScheduleMap';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/MapView">
               <Route path="city/:city" element={<MapView />} />
               <Route path="name/:name" element={<Location />} />
+              <Route path="schedule/:scheduleName" element={<ScheduleMap/>}/>
             </Route>
           </Routes>
         </BrowserRouter>
